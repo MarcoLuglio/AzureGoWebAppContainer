@@ -15,7 +15,7 @@ import (
 func main() {
 	http.HandleFunc("/", handler)
 	//http.ListenAndServe(":"+os.Getenv("HTTP_PLATFORM_PORT"), nil)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":80", nil)
 }
 
 func handler(responseWriter http.ResponseWriter, request *http.Request) {
