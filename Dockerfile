@@ -2,18 +2,23 @@
 # https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/go?view=azure-devops
 
 # https://hub.docker.com/_/golang
-# usar FROM golang:latest se o alpine não funcionar direito
-FROM golang:alpine
+FROM golang:alpine AS builder
+
 LABEL maintainer = "Marco Luglio <marcodejulho@gmail.com>"
-ENV GOOS 'linux'
+#ENV GOOS "linux"
 COPY . .
 
-#RUN go get -d -v ./...
+#RUN ls /go
+WORKDIR /go/src
 #RUN go install -v ./...
-#RUN go build -v -o ./...
-RUN ls
-WORKDIR src
-RUN go build -v -o ./main
-ENTRYPOINT [ "./main" ]
+RUN go get -d -v \
+	&& go build -v -o /go/bin/main \
+	&& chmod u+x /go/bin/main
+
+###############################################
+
+FROM alpine
+COPY --from=builder /go/bin/main /bin/main
 EXPOSE 80
-#CMD ["app"]
+ENTRYPOINT [ "/bin/main" ]
+CMD [""]
