@@ -1,4 +1,4 @@
-package azurego101
+package main
 
 // Azure SDK
 // go get -u -d github.com/Azure/azure-sdk-for-go/...
@@ -6,9 +6,7 @@ package azurego101
 // go get -u -d github.com/Azure/azure-event-hubs-go
 
 import (
-	"fmt"
 	"net/http"
-	"os"
 )
 
 // import
@@ -16,7 +14,8 @@ import (
 
 func main() {
 	http.HandleFunc("/", handler)
-	http.ListenAndServe(":"+os.Getenv("HTTP_PLATFORM_PORT"), nil)
+	//http.ListenAndServe(":"+os.Getenv("HTTP_PLATFORM_PORT"), nil)
+	http.ListenAndServe(":8080", nil)
 }
 
 func handler(responseWriter http.ResponseWriter, request *http.Request) {
@@ -42,8 +41,8 @@ func handler(responseWriter http.ResponseWriter, request *http.Request) {
 }
 
 func handleGet(responseWriter http.ResponseWriter, request *http.Request) (err error) {
-	responseWriter.WriteHeader(500)
 	responseWriter.Header().Set("Content-Type", "application/json")
-	fmt.Print(responseWriter, `{"hello":"world"}`)
+	responseWriter.WriteHeader(200)
+	responseWriter.Write([]byte(`{"hello":"world"}`))
 	return
 }
