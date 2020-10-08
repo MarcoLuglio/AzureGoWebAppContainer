@@ -6,6 +6,7 @@ package main
 // go get -u -d github.com/Azure/azure-event-hubs-go
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -13,6 +14,7 @@ import (
 // "github.com/Azure/go-autorest/autorest/to" // not sure what this does yet
 
 func main() {
+	fmt.Println("Starting go server on port 80")
 	http.HandleFunc("/", handler)
 	//http.ListenAndServe(":"+os.Getenv("HTTP_PLATFORM_PORT"), nil)
 	http.ListenAndServe(":80", nil)
