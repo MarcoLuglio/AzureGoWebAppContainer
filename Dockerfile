@@ -5,16 +5,15 @@
 # usar FROM golang:latest se o alpine não funcionar direito
 FROM golang:alpine
 LABEL maintainer = "Marco Luglio <marcodejulho@gmail.com>"
-ENV GOOS = linux
-#RUN
-WORKDIR /src
+ENV GOOS 'linux'
 COPY . .
 
-#for AWS lambda
 #RUN go get -d -v ./...
 #RUN go install -v ./...
 #RUN go build -v -o ./...
-RUN go build -v ./main.go
+RUN ls
+WORKDIR src
+RUN go build -v -o ./main
 ENTRYPOINT [ "./main" ]
 EXPOSE 80
 #CMD ["app"]
