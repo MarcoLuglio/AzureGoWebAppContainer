@@ -25,6 +25,8 @@ func handler(responseWriter http.ResponseWriter, request *http.Request) {
 	var err error
 
 	switch request.Method {
+	case "OPTIONS":
+		err = handleOptions(responseWriter, request)
 	case "GET":
 		err = handleGet(responseWriter, request)
 		/*case "POST":
@@ -42,8 +44,15 @@ func handler(responseWriter http.ResponseWriter, request *http.Request) {
 
 }
 
+func handleOptions(responseWriter http.ResponseWriter, request *http.Request) (err error) {
+	responseWriter.Header().Set("access-control-allow-origin", "*") // posso usar *, mas não se requerir autenticação com bearer:
+	responseWriter.Header().Set("access-control-allow-methods", "options, get, post, put, delete")
+	responseWriter.Header().Set("access-control-allow-headers", "content-type") // posso usar *
+	return
+}
+
 func handleGet(responseWriter http.ResponseWriter, request *http.Request) (err error) {
-	responseWriter.Header().Set("Content-Type", "application/json")
+	responseWriter.Header().Set("content-type", "application/json")
 	responseWriter.WriteHeader(200)
 	responseWriter.Write([]byte(`{"hello":"world"}`))
 	return
