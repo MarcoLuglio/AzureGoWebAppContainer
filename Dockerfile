@@ -3,22 +3,26 @@
 
 # https://hub.docker.com/_/golang
 FROM golang:alpine AS builder
-
 LABEL maintainer = "Marco Luglio <marcodejulho@gmail.com>"
+
 #ENV GOOS "linux"
 COPY . .
 
-#RUN ls /go
 WORKDIR /go/src
-#RUN go install -v ./...
+#RUN go install -v ./... \
 RUN go get -d -v \
-	&& go build -v -o /go/bin/main \
-	&& chmod u+x /go/bin/main
+	&& go build -v -o /go/bin/main
 
 ###############################################
 
 FROM alpine
+
 COPY --from=builder /go/bin/main /bin/main
+
+# user execute /bin/main
+RUN chmod u+x /bin/main
+
+WORKDIR /bin
 EXPOSE 80
 ENTRYPOINT [ "/bin/main" ]
 CMD [""]
